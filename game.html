@@ -16,13 +16,15 @@
             border: 2px solid #ff4444;
         }
         #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
             color: #ff4444;
             font-family: Arial, sans-serif;
             font-size: 24px;
-            text-shadow: 2px 2px #000;
+            text-align: center;
+            margin: 10px auto 0;
+            background: #1a1a1a;
+            border-radius: 5px;
+            width: 400px;
+            padding: 10px;
         }
         #instructions {
             position: absolute;
@@ -52,10 +54,10 @@
     </style>
 </head>
 <body>
-    <div id="score">Score: 0</div>
     <div id="instructions">Press SPACE to fly!</div>
     <canvas id="gameCanvas" width="400" height="600"></canvas>
     <div id="bottom-instruction">Press SPACE to fly!</div>
+    <div id="score">Score: 0</div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
