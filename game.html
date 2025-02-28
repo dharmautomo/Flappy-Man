@@ -104,17 +104,19 @@
             y: 300,
             radius: 15,
             velocity: 0,
-            gravity: 0.5,
-            lift: -10,
+            gravity: 0.4,  // Reduced initial gravity
+            lift: -8,      // Gentler lift
             wingAngle: 0,
             wingDirection: 1
         };
         let pipes = [];
         let score = 0;
-        let gameSpeed = 2;
+        let gameSpeed = 1.5;  // Slower initial speed
         let frameCount = 0;
         let gameOver = false;
         let clouds = [];
+        let initialGap = 200;  // Larger initial gap between pipes
+        let minGap = 130;      // Minimum gap size for highest difficulty
 
         // Generate initial clouds
         for (let i = 0; i < 5; i++) {
@@ -489,7 +491,8 @@
         // Pipe class
         class Pipe {
             constructor() {
-                this.gap = 150;
+                // Calculate gap size based on score - gradually gets smaller
+                this.gap = Math.max(initialGap - (score * 3), minGap);
                 this.top = Math.random() * (canvas.height - this.gap - 100) + 50;
                 this.bottom = this.top + this.gap;
                 this.x = canvas.width;
@@ -624,10 +627,12 @@
             bird.y += bird.velocity;
             drawBird();
 
-            // Spawn pipes
-            if (frameCount % 90 === 0) {
+            // Spawn pipes - less frequent at the beginning
+            const pipeSpawnRate = Math.max(100 - score * 2, 70); // Initial 100, gradually decreases to 70
+            if (frameCount % pipeSpawnRate === 0) {
                 pipes.push(new Pipe());
-                gameSpeed += 0.2; // Speed up over time
+                // More gradual speed increase
+                gameSpeed += 0.05 + (score * 0.005); // Speed increases more with higher score
             }
 
             // Update and draw pipes
@@ -650,6 +655,14 @@
                     pipe.passed = true;
                     score++;
                     scoreDisplay.textContent = `Score: ${score}`;
+                    
+                    // Gradually increase difficulty based on score
+                    if (score % 5 === 0 && score > 0) {
+                        // Every 5 points, slightly increase gravity
+                        bird.gravity = Math.min(bird.gravity + 0.025, 0.6);
+                        // Adjust lift to keep playability balanced
+                        bird.lift = Math.max(bird.lift - 0.2, -12);
+                    }
                 }
 
                 // Remove offscreen pipes
@@ -670,9 +683,10 @@
         function resetGame() {
             bird.y = 300;
             bird.velocity = 0;
+            bird.gravity = 0.4; // Reset gravity to initial easier value
             pipes = [];
             score = 0;
-            gameSpeed = 2;
+            gameSpeed = 1.5; // Reset to initial slower speed
             frameCount = 0;
             gameOver = false;
             scoreDisplay.textContent = `Score: ${score}`;
