@@ -12,7 +12,7 @@
         #gameCanvas {
             display: block;
             margin: 0 auto;
-            background: #333;
+            background: #78c7ff; /* Sky blue background */
             border: 2px solid #ff4444;
         }
         #score {
@@ -24,10 +24,24 @@
             font-size: 24px;
             text-shadow: 2px 2px #000;
         }
+        #instructions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ff4444;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            text-shadow: 1px 1px #000;
+            text-align: right;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div id="score">Score: 0</div>
+    <div id="instructions">Press SPACE to fly!</div>
     <canvas id="gameCanvas" width="400" height="600"></canvas>
 
     <script>
@@ -42,21 +56,119 @@
             radius: 15,
             velocity: 0,
             gravity: 0.5,
-            lift: -10
+            lift: -10,
+            wingAngle: 0,
+            wingDirection: 1
         };
         let pipes = [];
         let score = 0;
         let gameSpeed = 2;
         let frameCount = 0;
         let gameOver = false;
+        let clouds = [];
 
-        // Bird image (simple circle for now, replace with an image if you want)
+        // Generate initial clouds
+        for (let i = 0; i < 5; i++) {
+            clouds.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * (canvas.height / 2),
+                width: Math.random() * 50 + 50,
+                height: Math.random() * 30 + 20,
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+
+        // Draw clouds
+        function drawClouds() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            clouds.forEach(cloud => {
+                ctx.beginPath();
+                ctx.ellipse(cloud.x, cloud.y, cloud.width / 2, cloud.height / 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.closePath();
+                
+                // Move clouds
+                cloud.x -= cloud.speed;
+                
+                // If cloud is off screen, reset it
+                if (cloud.x + cloud.width < 0) {
+                    cloud.x = canvas.width + cloud.width;
+                    cloud.y = Math.random() * (canvas.height / 2);
+                }
+            });
+        }
+
+        // Draw human with wings instead of a bird
         function drawBird() {
+            // Update wing angle for flapping animation
+            bird.wingAngle += 0.2 * bird.wingDirection;
+            if (bird.wingAngle > 0.5 || bird.wingAngle < -0.5) {
+                bird.wingDirection *= -1;
+            }
+
+            // Body
             ctx.beginPath();
             ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#ff4444';
+            ctx.fillStyle = '#F5D0A9'; // Skin color
             ctx.fill();
             ctx.closePath();
+
+            // Head
+            ctx.beginPath();
+            ctx.arc(bird.x, bird.y - bird.radius, bird.radius * 0.7, 0, Math.PI * 2);
+            ctx.fillStyle = '#F5D0A9'; // Skin color
+            ctx.fill();
+            ctx.closePath();
+
+            // Eyes
+            ctx.beginPath();
+            ctx.arc(bird.x - 5, bird.y - bird.radius, 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(bird.x + 5, bird.y - bird.radius, 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.closePath();
+
+            // Smile
+            ctx.beginPath();
+            ctx.arc(bird.x, bird.y - bird.radius + 4, 4, 0, Math.PI);
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+            ctx.closePath();
+
+            // Wings
+            ctx.save();
+            ctx.translate(bird.x, bird.y);
+            
+            // Left wing
+            ctx.beginPath();
+            ctx.rotate(-Math.PI / 4 + bird.wingAngle);
+            ctx.ellipse(0, 0, bird.radius * 1.5, bird.radius * 0.7, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFD700'; // Gold wings
+            ctx.fill();
+            ctx.strokeStyle = '#DAA520'; // Darker gold outline
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
+
+            // Right wing
+            ctx.save();
+            ctx.translate(bird.x, bird.y);
+            ctx.beginPath();
+            ctx.rotate(Math.PI / 4 - bird.wingAngle);
+            ctx.ellipse(0, 0, bird.radius * 1.5, bird.radius * 0.7, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFD700'; // Gold wings
+            ctx.fill();
+            ctx.strokeStyle = '#DAA520'; // Darker gold outline
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.closePath();
+            ctx.restore();
         }
 
         // Pipe class
@@ -111,6 +223,9 @@
 
             frameCount++;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw sky background
+            drawClouds();
 
             // Bird physics
             bird.velocity += bird.gravity;
@@ -171,6 +286,11 @@
             scoreDisplay.textContent = `Score: ${score}`;
             update();
         }
+
+        // Show a welcome message at start
+        ctx.fillStyle = '#ff4444';
+        ctx.font = '30px Arial';
+        ctx.fillText('Press SPACE to Start!', 60, 300);
 
         // Start the game
         update();
