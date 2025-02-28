@@ -116,7 +116,7 @@
         // Draw human with wings instead of a bird
         function drawBird() {
             // Update wing angle for flapping animation
-            bird.wingAngle += 0.2 * bird.wingDirection;
+            bird.wingAngle += 0.15 * bird.wingDirection;
             if (bird.wingAngle > 0.5 || bird.wingAngle < -0.5) {
                 bird.wingDirection *= -1;
             }
@@ -125,37 +125,127 @@
             ctx.save();
             ctx.translate(bird.x, bird.y);
             
-            // Draw wings BEHIND the character first
+            // Draw robot wings BEHIND the character first
             
-            // Left wing
+            // Left wing - robot style
             ctx.save();
-            ctx.beginPath();
+            ctx.translate(-bird.radius * 1.5, -bird.radius * 0.2);
             ctx.rotate(-Math.PI / 6 + bird.wingAngle * 0.7);
-            ctx.ellipse(-bird.radius * 1.2, -bird.radius * 0.2, bird.radius * 2, bird.radius * 0.9, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#FF9900'; // Orange wings
-            ctx.fill();
-            ctx.strokeStyle = '#FF6600'; // Darker orange outline
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.closePath();
-            ctx.restore();
-
-            // Right wing
-            ctx.save();
-            ctx.beginPath();
-            ctx.rotate(Math.PI / 6 - bird.wingAngle * 0.7);
-            ctx.ellipse(bird.radius * 1.2, -bird.radius * 0.2, bird.radius * 2, bird.radius * 0.9, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#FF9900'; // Orange wings
-            ctx.fill();
-            ctx.strokeStyle = '#FF6600'; // Darker orange outline
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.closePath();
-            ctx.restore();
-
-            // Now draw the character OVER the wings
             
-            // Body - realistic proportions with clothing
+            // Wing frame
+            ctx.beginPath();
+            ctx.rect(-bird.radius * 1.8, -bird.radius * 0.7, bird.radius * 1.8, bird.radius * 1.4);
+            ctx.fillStyle = '#444444'; // Dark metallic
+            ctx.fill();
+            ctx.strokeStyle = '#222222';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.closePath();
+            
+            // Wing panels
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.rect(-bird.radius * 1.6, -bird.radius * 0.5 + i * bird.radius * 0.5, bird.radius * 1.4, bird.radius * 0.3);
+                ctx.fillStyle = '#777777'; // Lighter metal
+                ctx.fill();
+                ctx.strokeStyle = '#555555';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.closePath();
+            }
+            
+            // Wing lights
+            ctx.beginPath();
+            ctx.rect(-bird.radius * 1.7, -bird.radius * 0.6, bird.radius * 0.2, bird.radius * 1.2);
+            ctx.fillStyle = '#00FFFF'; // Cyan glow
+            ctx.fill();
+            ctx.closePath();
+            
+            ctx.restore();
+
+            // Right wing - robot style
+            ctx.save();
+            ctx.translate(bird.radius * 1.5, -bird.radius * 0.2);
+            ctx.rotate(Math.PI / 6 - bird.wingAngle * 0.7);
+            
+            // Wing frame
+            ctx.beginPath();
+            ctx.rect(0, -bird.radius * 0.7, bird.radius * 1.8, bird.radius * 1.4);
+            ctx.fillStyle = '#444444'; // Dark metallic
+            ctx.fill();
+            ctx.strokeStyle = '#222222';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.closePath();
+            
+            // Wing panels
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.rect(bird.radius * 0.2, -bird.radius * 0.5 + i * bird.radius * 0.5, bird.radius * 1.4, bird.radius * 0.3);
+                ctx.fillStyle = '#777777'; // Lighter metal
+                ctx.fill();
+                ctx.strokeStyle = '#555555';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.closePath();
+            }
+            
+            // Wing lights
+            ctx.beginPath();
+            ctx.rect(bird.radius * 1.5, -bird.radius * 0.6, bird.radius * 0.2, bird.radius * 1.2);
+            ctx.fillStyle = '#00FFFF'; // Cyan glow
+            ctx.fill();
+            ctx.closePath();
+            
+            ctx.restore();
+
+            // Now draw the character OVER the wings - FULL BODY
+            
+            // Legs
+            ctx.beginPath();
+            ctx.moveTo(-bird.radius * 0.4, bird.radius * 0.8);
+            ctx.lineTo(-bird.radius * 0.5, bird.radius * 1.7);
+            ctx.lineTo(-bird.radius * 0.3, bird.radius * 1.7);
+            ctx.lineTo(-bird.radius * 0.2, bird.radius * 0.8);
+            ctx.closePath();
+            ctx.fillStyle = '#333333'; // Dark pants
+            ctx.fill();
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(bird.radius * 0.4, bird.radius * 0.8);
+            ctx.lineTo(bird.radius * 0.5, bird.radius * 1.7);
+            ctx.lineTo(bird.radius * 0.3, bird.radius * 1.7);
+            ctx.lineTo(bird.radius * 0.2, bird.radius * 0.8);
+            ctx.closePath();
+            ctx.fillStyle = '#333333'; // Dark pants
+            ctx.fill();
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            // Feet
+            ctx.beginPath();
+            ctx.ellipse(-bird.radius * 0.4, bird.radius * 1.8, bird.radius * 0.25, bird.radius * 0.15, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#663300'; // Brown shoes
+            ctx.fill();
+            ctx.strokeStyle = '#442200';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.closePath();
+            
+            ctx.beginPath();
+            ctx.ellipse(bird.radius * 0.4, bird.radius * 1.8, bird.radius * 0.25, bird.radius * 0.15, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#663300'; // Brown shoes
+            ctx.fill();
+            ctx.strokeStyle = '#442200';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.closePath();
+            
+            // Torso/body
             ctx.beginPath();
             ctx.ellipse(0, 0, bird.radius * 0.9, bird.radius * 1.2, 0, 0, Math.PI * 2);
             ctx.fillStyle = '#3D85C6'; // Blue shirt/jacket
@@ -165,7 +255,7 @@
             ctx.stroke();
             ctx.closePath();
             
-            // Add shirt details
+            // Shirt details
             ctx.beginPath();
             ctx.moveTo(-bird.radius * 0.4, -bird.radius * 0.3);
             ctx.lineTo(bird.radius * 0.4, -bird.radius * 0.3);
@@ -175,7 +265,7 @@
             ctx.fillStyle = '#FFFFFF'; // White shirt under jacket
             ctx.fill();
             
-            // Head - realistic proportions
+            // Head
             ctx.beginPath();
             ctx.arc(0, -bird.radius * 1.1, bird.radius * 0.7, 0, Math.PI * 2);
             ctx.fillStyle = '#F5D0A9'; // Realistic skin tone
@@ -185,40 +275,56 @@
             ctx.stroke();
             ctx.closePath();
 
-            // Realistic hair
+            // Hair - fuller and more detailed
             ctx.beginPath();
-            ctx.moveTo(-bird.radius * 0.7, -bird.radius * 1.2);
+            // Top of hair
+            ctx.moveTo(-bird.radius * 0.75, -bird.radius * 1.5);
             ctx.bezierCurveTo(
-                -bird.radius * 0.6, -bird.radius * 1.7,
-                bird.radius * 0.6, -bird.radius * 1.7,
-                bird.radius * 0.7, -bird.radius * 1.2
+                -bird.radius * 0.5, -bird.radius * 1.9,
+                bird.radius * 0.5, -bird.radius * 1.9,
+                bird.radius * 0.75, -bird.radius * 1.5
             );
-            ctx.lineTo(bird.radius * 0.7, -bird.radius * 0.7);
-            ctx.lineTo(-bird.radius * 0.7, -bird.radius * 0.7);
+            
+            // Right side of hair
+            ctx.bezierCurveTo(
+                bird.radius * 0.9, -bird.radius * 1.3,
+                bird.radius * 0.8, -bird.radius * 0.8,
+                bird.radius * 0.7, -bird.radius * 0.5
+            );
+            
+            // Bottom of hair
+            ctx.lineTo(-bird.radius * 0.7, -bird.radius * 0.5);
+            
+            // Left side of hair
+            ctx.bezierCurveTo(
+                -bird.radius * 0.8, -bird.radius * 0.8,
+                -bird.radius * 0.9, -bird.radius * 1.3,
+                -bird.radius * 0.75, -bird.radius * 1.5
+            );
+            
             ctx.closePath();
             ctx.fillStyle = '#6B4226'; // Brown hair
             ctx.fill();
-            
-            // Side hair details
-            ctx.beginPath();
-            ctx.moveTo(-bird.radius * 0.7, -bird.radius * 1.2);
-            ctx.quadraticCurveTo(
-                -bird.radius * 0.8, -bird.radius * 0.9,
-                -bird.radius * 0.7, -bird.radius * 0.7
-            );
+            ctx.strokeStyle = '#513019';
+            ctx.lineWidth = 1;
             ctx.stroke();
-            ctx.closePath();
             
-            ctx.beginPath();
-            ctx.moveTo(bird.radius * 0.7, -bird.radius * 1.2);
-            ctx.quadraticCurveTo(
-                bird.radius * 0.8, -bird.radius * 0.9,
-                bird.radius * 0.7, -bird.radius * 0.7
-            );
-            ctx.stroke();
-            ctx.closePath();
+            // Hair highlights
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.moveTo(-bird.radius * 0.6 + i * bird.radius * 0.3, -bird.radius * 1.7);
+                ctx.quadraticCurveTo(
+                    -bird.radius * 0.5 + i * bird.radius * 0.3, -bird.radius * 1.3,
+                    -bird.radius * 0.4 + i * bird.radius * 0.3, -bird.radius * 0.9
+                );
+                ctx.strokeStyle = '#7D5238';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.closePath();
+            }
             
-            // Normal eyes
+            // Face features
+            // Eyes
             ctx.beginPath();
             ctx.arc(-bird.radius * 0.3, -bird.radius * 1.1, bird.radius * 0.12, 0, Math.PI * 2);
             ctx.fillStyle = 'white';
@@ -237,7 +343,7 @@
             ctx.stroke();
             ctx.closePath();
             
-            // Normal pupils
+            // Pupils
             ctx.beginPath();
             ctx.arc(-bird.radius * 0.3, -bird.radius * 1.1, bird.radius * 0.05, 0, Math.PI * 2);
             ctx.fillStyle = '#3F2E1F'; // Dark brown eyes
@@ -277,7 +383,7 @@
             ctx.stroke();
             ctx.closePath();
 
-            // Normal smile
+            // Mouth
             ctx.beginPath();
             ctx.arc(0, -bird.radius * 0.8, bird.radius * 0.25, 0.1 * Math.PI, 0.9 * Math.PI);
             ctx.strokeStyle = '#AA6666';
@@ -285,7 +391,7 @@
             ctx.stroke();
             ctx.closePath();
 
-            // Arms with proper hands
+            // Arms
             ctx.beginPath();
             ctx.moveTo(-bird.radius * 0.5, -bird.radius * 0.1);
             ctx.quadraticCurveTo(
@@ -345,11 +451,78 @@
             }
 
             draw() {
-                // Top pipe
-                ctx.fillStyle = '#00cc00';
-                ctx.fillRect(this.x, 0, this.width, this.top);
-                // Bottom pipe
-                ctx.fillRect(this.x, this.bottom, this.width, canvas.height - this.bottom);
+                // Sharp top pipe - metallic knife-like
+                ctx.fillStyle = '#B0B0B0'; // Metallic silver
+                ctx.beginPath();
+                
+                // Top pipe body
+                ctx.rect(this.x, 0, this.width, this.top - 20);
+                ctx.fill();
+                ctx.closePath();
+                
+                // Top pipe sharp edge
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.top - 20);
+                ctx.lineTo(this.x + this.width/2, this.top);
+                ctx.lineTo(this.x + this.width, this.top - 20);
+                ctx.fillStyle = '#D0D0D0'; // Lighter silver for the edge
+                ctx.fill();
+                ctx.closePath();
+                
+                // Add metallic highlight
+                ctx.beginPath();
+                ctx.moveTo(this.x + 5, 0);
+                ctx.lineTo(this.x + 5, this.top - 20);
+                ctx.lineTo(this.x + this.width/2 - 5, this.top - 5);
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.closePath();
+                
+                // Bottom pipe - metallic knife-like
+                ctx.fillStyle = '#B0B0B0'; // Metallic silver
+                ctx.beginPath();
+                
+                // Bottom pipe body
+                ctx.rect(this.x, this.bottom + 20, this.width, canvas.height - (this.bottom + 20));
+                ctx.fill();
+                ctx.closePath();
+                
+                // Bottom pipe sharp edge
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.bottom + 20);
+                ctx.lineTo(this.x + this.width/2, this.bottom);
+                ctx.lineTo(this.x + this.width, this.bottom + 20);
+                ctx.fillStyle = '#D0D0D0'; // Lighter silver for the edge
+                ctx.fill();
+                ctx.closePath();
+                
+                // Add metallic highlight
+                ctx.beginPath();
+                ctx.moveTo(this.x + 5, canvas.height);
+                ctx.lineTo(this.x + 5, this.bottom + 20);
+                ctx.lineTo(this.x + this.width/2 - 5, this.bottom + 5);
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.closePath();
+                
+                // Add danger red accent
+                ctx.beginPath();
+                ctx.moveTo(this.x + this.width - 5, 0);
+                ctx.lineTo(this.x + this.width - 5, this.top - 20);
+                ctx.strokeStyle = '#FF0000';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                ctx.closePath();
+                
+                ctx.beginPath();
+                ctx.moveTo(this.x + this.width - 5, canvas.height);
+                ctx.lineTo(this.x + this.width - 5, this.bottom + 20);
+                ctx.strokeStyle = '#FF0000';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                ctx.closePath();
             }
 
             update() {
