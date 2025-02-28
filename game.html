@@ -37,20 +37,7 @@
             max-width: 400px;
             padding: 10px;
         }
-        #instructions {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            color: #ff4444;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            text-shadow: 1px 1px #000;
-            text-align: right;
-            padding: 5px 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            z-index: 10;
-        }
+        
         #bottom-instruction {
             margin-top: 10px;
             color: #ff4444;
@@ -67,7 +54,6 @@
     </style>
 </head>
 <body>
-    <div id="instructions">Press SPACE or tap screen to fly!</div>
     <canvas id="gameCanvas" width="400" height="600"></canvas>
     <div id="bottom-instruction">Press SPACE or tap screen to fly!</div>
     <div id="score">Score: 0</div>
@@ -87,9 +73,9 @@
                 canvas.width = Math.min(windowWidth * 0.95, 400);
                 canvas.height = Math.min(windowHeight * 0.7, 600);
             } else {
-                // Desktop layout
-                canvas.width = 400;
-                canvas.height = 600;
+                // Desktop layout - larger game
+                canvas.width = 600;
+                canvas.height = 800;
             }
         }
         
