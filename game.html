@@ -121,48 +121,98 @@
                 bird.wingDirection *= -1;
             }
 
+            // Save the current state
+            ctx.save();
+            ctx.translate(bird.x, bird.y);
+
             // Body
             ctx.beginPath();
-            ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#F5D0A9'; // Skin color
+            ctx.ellipse(0, 0, bird.radius * 0.8, bird.radius * 1.2, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#3D85C6'; // Blue body/clothing
             ctx.fill();
+            ctx.strokeStyle = '#2A5D8C';
+            ctx.lineWidth = 2;
+            ctx.stroke();
             ctx.closePath();
 
             // Head
             ctx.beginPath();
-            ctx.arc(bird.x, bird.y - bird.radius, bird.radius * 0.7, 0, Math.PI * 2);
+            ctx.arc(0, -bird.radius * 1.2, bird.radius * 0.7, 0, Math.PI * 2);
             ctx.fillStyle = '#F5D0A9'; // Skin color
             ctx.fill();
+            ctx.strokeStyle = '#C0A080';
+            ctx.lineWidth = 1;
+            ctx.stroke();
             ctx.closePath();
 
+            // Hair
+            ctx.beginPath();
+            ctx.moveTo(-bird.radius * 0.7, -bird.radius * 1.5);
+            ctx.quadraticCurveTo(0, -bird.radius * 1.9, bird.radius * 0.7, -bird.radius * 1.5);
+            ctx.lineTo(bird.radius * 0.7, -bird.radius * 1.1);
+            ctx.lineTo(-bird.radius * 0.7, -bird.radius * 1.1);
+            ctx.closePath();
+            ctx.fillStyle = '#8B4513'; // Brown hair
+            ctx.fill();
+            
             // Eyes
             ctx.beginPath();
-            ctx.arc(bird.x - 5, bird.y - bird.radius, 2, 0, Math.PI * 2);
+            ctx.arc(-bird.radius * 0.3, -bird.radius * 1.2, bird.radius * 0.12, 0, Math.PI * 2);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.closePath();
+            
+            ctx.beginPath();
+            ctx.arc(bird.radius * 0.3, -bird.radius * 1.2, bird.radius * 0.12, 0, Math.PI * 2);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.closePath();
+            
+            // Pupils
+            ctx.beginPath();
+            ctx.arc(-bird.radius * 0.3, -bird.radius * 1.2, bird.radius * 0.05, 0, Math.PI * 2);
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.closePath();
+            
+            ctx.beginPath();
+            ctx.arc(bird.radius * 0.3, -bird.radius * 1.2, bird.radius * 0.05, 0, Math.PI * 2);
             ctx.fillStyle = 'black';
             ctx.fill();
             ctx.closePath();
 
+            // Mouth
             ctx.beginPath();
-            ctx.arc(bird.x + 5, bird.y - bird.radius, 2, 0, Math.PI * 2);
-            ctx.fillStyle = 'black';
-            ctx.fill();
+            ctx.arc(0, -bird.radius * 0.9, bird.radius * 0.2, 0.1 * Math.PI, 0.9 * Math.PI);
+            ctx.strokeStyle = '#A52A2A';
+            ctx.lineWidth = 2;
+            ctx.stroke();
             ctx.closePath();
 
-            // Smile
+            // Arms/legs
             ctx.beginPath();
-            ctx.arc(bird.x, bird.y - bird.radius + 4, 4, 0, Math.PI);
-            ctx.strokeStyle = 'black';
+            ctx.moveTo(-bird.radius * 0.6, bird.radius * 0.2);
+            ctx.lineTo(-bird.radius * 1, bird.radius * 0.8);
+            ctx.strokeStyle = '#F5D0A9';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.closePath();
+            
+            ctx.beginPath();
+            ctx.moveTo(bird.radius * 0.6, bird.radius * 0.2);
+            ctx.lineTo(bird.radius * 1, bird.radius * 0.8);
+            ctx.strokeStyle = '#F5D0A9';
+            ctx.lineWidth = 3;
             ctx.stroke();
             ctx.closePath();
 
             // Wings
             ctx.save();
-            ctx.translate(bird.x, bird.y);
             
             // Left wing
             ctx.beginPath();
-            ctx.rotate(-Math.PI / 4 + bird.wingAngle);
-            ctx.ellipse(0, 0, bird.radius * 1.5, bird.radius * 0.7, 0, 0, Math.PI * 2);
+            ctx.rotate(-Math.PI / 6 + bird.wingAngle * 0.5);
+            ctx.ellipse(-bird.radius * 1.2, -bird.radius * 0.2, bird.radius * 1.8, bird.radius * 0.8, 0, 0, Math.PI * 2);
             ctx.fillStyle = '#FFD700'; // Gold wings
             ctx.fill();
             ctx.strokeStyle = '#DAA520'; // Darker gold outline
@@ -173,16 +223,18 @@
 
             // Right wing
             ctx.save();
-            ctx.translate(bird.x, bird.y);
             ctx.beginPath();
-            ctx.rotate(Math.PI / 4 - bird.wingAngle);
-            ctx.ellipse(0, 0, bird.radius * 1.5, bird.radius * 0.7, 0, 0, Math.PI * 2);
+            ctx.rotate(Math.PI / 6 - bird.wingAngle * 0.5);
+            ctx.ellipse(bird.radius * 1.2, -bird.radius * 0.2, bird.radius * 1.8, bird.radius * 0.8, 0, 0, Math.PI * 2);
             ctx.fillStyle = '#FFD700'; // Gold wings
             ctx.fill();
             ctx.strokeStyle = '#DAA520'; // Darker gold outline
             ctx.lineWidth = 2;
             ctx.stroke();
             ctx.closePath();
+            ctx.restore();
+
+            // Restore the context
             ctx.restore();
         }
 
