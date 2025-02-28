@@ -2,18 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Extreme Flappy Bird</title>
     <style>
         body {
             margin: 0;
+            padding: 0;
             overflow: hidden;
             background: #1a1a1a;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         #gameCanvas {
             display: block;
             margin: 0 auto;
             background: #78c7ff; /* Sky blue background */
             border: 2px solid #ff4444;
+            max-width: 100%;
+            max-height: 80vh;
         }
         #score {
             color: #ff4444;
@@ -23,11 +33,12 @@
             margin: 10px auto 0;
             background: #1a1a1a;
             border-radius: 5px;
-            width: 400px;
+            width: 90%;
+            max-width: 400px;
             padding: 10px;
         }
         #instructions {
-            position: absolute;
+            position: fixed;
             top: 10px;
             right: 10px;
             color: #ff4444;
@@ -38,6 +49,7 @@
             padding: 5px 10px;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 5px;
+            z-index: 10;
         }
         #bottom-instruction {
             margin-top: 10px;
@@ -48,7 +60,8 @@
             padding: 10px;
             background: #1a1a1a;
             border-radius: 5px;
-            width: 400px;
+            width: 90%;
+            max-width: 400px;
             margin: 10px auto 0;
         }
     </style>
@@ -63,6 +76,27 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
+        
+        // Responsive canvas sizing
+        function resizeCanvas() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            if (windowWidth < 500) {
+                // Mobile layout
+                canvas.width = Math.min(windowWidth * 0.95, 400);
+                canvas.height = Math.min(windowHeight * 0.7, 600);
+            } else {
+                // Desktop layout
+                canvas.width = 400;
+                canvas.height = 600;
+            }
+        }
+        
+        // Call resize on load and when window size changes
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         // Game variables
         let bird = {
