@@ -37,12 +37,25 @@
             background: rgba(0, 0, 0, 0.5);
             border-radius: 5px;
         }
+        #bottom-instruction {
+            margin-top: 10px;
+            color: #ff4444;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            text-align: center;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 5px;
+            width: 400px;
+            margin: 10px auto 0;
+        }
     </style>
 </head>
 <body>
     <div id="score">Score: 0</div>
     <div id="instructions">Press SPACE to fly!</div>
     <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <div id="bottom-instruction">Press SPACE to fly!</div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
