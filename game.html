@@ -54,9 +54,9 @@
     </style>
 </head>
 <body>
-    <div id="instructions">Press SPACE to fly!</div>
+    <div id="instructions">Press SPACE or tap screen to fly!</div>
     <canvas id="gameCanvas" width="400" height="600"></canvas>
-    <div id="bottom-instruction">Press SPACE to fly!</div>
+    <div id="bottom-instruction">Press SPACE or tap screen to fly!</div>
     <div id="score">Score: 0</div>
 
     <script>
@@ -548,12 +548,22 @@
             }
         }
 
-        // Handle input
+        // Handle keyboard input
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space' && !gameOver) {
                 bird.velocity = bird.lift;
             }
             if (e.code === 'Enter' && gameOver) {
+                resetGame();
+            }
+        });
+        
+        // Handle touch input for mobile
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevent scrolling when touching the canvas
+            if (!gameOver) {
+                bird.velocity = bird.lift;
+            } else {
                 resetGame();
             }
         });
@@ -565,7 +575,7 @@
                 ctx.font = '40px Arial';
                 ctx.fillText('Game Over', 80, 300);
                 ctx.font = '20px Arial';
-                ctx.fillText('Press Enter to Restart', 100, 350);
+                ctx.fillText('Press Enter or Tap Screen to Restart', 70, 350);
                 return;
             }
 
